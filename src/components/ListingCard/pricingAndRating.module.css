@@ -1,0 +1,13 @@
+.pricingRating{
+  display: flex;
+  justify-content: space-between;
+  padding: 16px;
+  border-top: 1px solid #ddd;
+}
+.propertyPrice{
+  font-weight: bold;
+}
+.propertyRating{
+color: #ff5a5f;
+font-size: 16px;
+}

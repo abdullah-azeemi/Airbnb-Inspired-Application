@@ -1,0 +1,19 @@
+.propertyDetails{
+  padding: 16px;;
+}
+.propertyImage{
+  width: 45%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.propertyTitle{
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 8px;
+}
+.propertyType,
+.propertyInfo{
+  color: #666;
+  font-size: 14px;
+}

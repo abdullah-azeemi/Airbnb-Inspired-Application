@@ -14,7 +14,9 @@ const categories = [
 
 const Categories = () => {
   const [activeCategory, setCategory] = useState("All");
+
   const handleCategoryClick = (category) => {
+    setCategory(category);
     console.log(`Active Category is : ${category}`);
   };
 
@@ -23,7 +25,7 @@ const Categories = () => {
       <div className={styles.categories}>
         <button
           className={`${styles.categoryButton} ${
-            activeCategory === "All" ? "active" : ""
+            activeCategory === "All" ? styles.active : ""
           }`}
           onClick={() => handleCategoryClick("All")}
         >
@@ -32,8 +34,8 @@ const Categories = () => {
         {categories.map((category, index) => (
           <button
             key={index}
-            className={`categoryButton ${
-              activeCategory === category.name ? "active" : ""
+            className={`${styles.categoryButton} ${
+              activeCategory === category.name ? styles.active : ""
             }`}
             onClick={() => handleCategoryClick(category.name)}
           >
@@ -44,4 +46,5 @@ const Categories = () => {
     </div>
   );
 };
+
 export default Categories;
