@@ -1,7 +1,8 @@
-import Navbar from "./components/navbar.jsx";
-import SearchBar from "./components/searchBar.jsx";
-import Categories from "./components/categories.jsx";
+import Navbar from "./components/Navbar/navbar.jsx";
+import SearchBar from "./components/Searchbar/searchBar.jsx";
+import Categories from "./components/Categories/categories.jsx";
 import ListingCard from "./components/Listingcard/listingCard.jsx";
+import Footer from "./components/Footer/footer.jsx";
 import styles from "./App.module.css";
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
         <ListingCard {...mockListing}></ListingCard>
         <ListingCard {...mockListing}></ListingCard>
       </div>
+      <Footer></Footer>
     </div>
   );
 }

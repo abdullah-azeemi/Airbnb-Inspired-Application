@@ -1,0 +1,13 @@
+.footer{
+  background-color: #f8f8f8;
+  padding: 20px;
+  border-top: 1px solid #ddd;
+}
+.footerContainer{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 100%;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}

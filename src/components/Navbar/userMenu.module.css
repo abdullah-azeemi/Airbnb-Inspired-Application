@@ -1,0 +1,21 @@
+.userMenu {
+  display: flex;
+  align-items: center;
+}
+
+.userMenu ul {
+  display: flex;
+  gap: 20px;  
+  list-style: none;
+}
+
+.userMenu ul li a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 16px;
+  transition: color 0.3s ease;
+}
+
+.userMenu ul li a:hover {
+  color: #ff5a5f;  
+}
