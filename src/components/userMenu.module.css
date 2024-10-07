@@ -1,0 +1,16 @@
+.userMenu{
+  display: flex;
+  width: 20%;
+  align-items: center;
+  color: #fff;
+}
+.userMenu ul{
+  width: 20%;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+}
+.userMenu ul a{
+  color: #fff;
+  text-decoration: none;
+}

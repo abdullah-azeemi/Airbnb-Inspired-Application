@@ -1,0 +1,17 @@
+.navLinks{
+  width: 40%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.navLinks li{
+  list-style: none;
+}
+.navLinks li a{
+  color: #fff;
+  font-size: 20px;
+  text-decoration: none;
+}
+.navMain{
+  width: 75%;
+}
