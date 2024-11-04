@@ -1,7 +1,3 @@
-Here’s a template for your **README.md** file. It covers the project description, setup instructions, and any assumptions or design decisions you’ve made:
-
----
-
 # Airbnb Clone - React Project
 
 ## Project Description
