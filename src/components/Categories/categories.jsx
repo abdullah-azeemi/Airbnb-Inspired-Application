@@ -2,47 +2,34 @@ import { useState } from "react";
 import styles from "./categories.module.css";
 
 const categories = [
+  { name: "All" },
   { name: "Beachfront" },
-  { name: "Cabins" },
-  { name: "Trending" },
-  { name: "Luxury" },
-  { name: "Camping" },
-  { name: "Historical" },
-  { name: "Tropical" },
-  { name: "Mountains" },
+  { name: "Cabin" },
+  { name: "Apartment" },
+  { name: "Villa" },
 ];
 
-const Categories = () => {
-  const [activeCategory, setCategory] = useState("All");
+const Categories = ({ onCategorySelect }) => {
+  const [activeCategory, setActiveCategory] = useState("All");
 
   const handleCategoryClick = (category) => {
-    setCategory(category);
-    console.log(`Active Category is : ${category}`);
+    setActiveCategory(category); // Update the active category
+    onCategorySelect(category); // Call the parent handler with selected category
   };
 
   return (
     <div className={styles.categoriesContainer}>
-      <div className={styles.categories}>
+      {categories.map((category) => (
         <button
+          key={category.name}
           className={`${styles.categoryButton} ${
-            activeCategory === "All" ? styles.active : ""
+            activeCategory === category.name ? styles.active : ""
           }`}
-          onClick={() => handleCategoryClick("All")}
+          onClick={() => handleCategoryClick(category.name)}
         >
-          All
+          {category.name}
         </button>
-        {categories.map((category, index) => (
-          <button
-            key={index}
-            className={`${styles.categoryButton} ${
-              activeCategory === category.name ? styles.active : ""
-            }`}
-            onClick={() => handleCategoryClick(category.name)}
-          >
-            {category.name}
-          </button>
-        ))}
-      </div>
+      ))}
     </div>
   );
 };

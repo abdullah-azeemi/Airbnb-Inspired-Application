@@ -1,0 +1,11 @@
+.starRating {
+  display: flex;
+}
+
+.filledStar {
+  color: #ff5a5f; 
+}
+
+.emptyStar {
+  color: #ddd; 
+}
