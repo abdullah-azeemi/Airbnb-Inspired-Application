@@ -11,4 +11,7 @@ app.use("/images", express.static("images"));
 const listingsRoutes = require("./routes/listings");
 app.use("/api/listings", listingsRoutes);
 
+const authRoutes = require("./routes/auth");
+app.use("/api", authRoutes);
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

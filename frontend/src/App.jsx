@@ -7,6 +7,8 @@ import ListingCard from "./components/ListingCard/ListingCard.jsx";
 import Footer from "./components/Footer/Footer.jsx";
 import ListingDetailsPage from "./pages/listingDetailsPage";
 import BookingPage from "./pages/bookingPage.jsx";
+import LoginPage from "./pages/loginPage.jsx";
+import SignupPage from "./pages/signupPage.jsx";
 import styles from "./App.module.css";
 
 function App() {
@@ -59,6 +61,8 @@ function App() {
         />
         <Route path="/listings/:id" element={<ListingDetailsPage />} />
         <Route path="/book/:id" element={<BookingPage />} />
+        <Route path="login" element={<LoginPage />} />
+        <Route path="signup" element={<SignupPage />} />
       </Routes>
       <Footer />
     </Router>

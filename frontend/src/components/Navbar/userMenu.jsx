@@ -5,12 +5,12 @@ const UserMenu = () => {
     <div className={styles.userMenu}>
       <ul>
         <li>
-          <Link to="/" className={styles.userMenu}>
+          <Link to="/login" className={styles.userMenu}>
             Login
           </Link>
         </li>
         <li>
-          <Link to="\" className={styles.userMenu}>
+          <Link to="/signup" className={styles.userMenu}>
             Signup
           </Link>
         </li>
