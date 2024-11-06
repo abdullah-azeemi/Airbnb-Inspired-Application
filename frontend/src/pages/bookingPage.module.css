@@ -1,15 +1,63 @@
-.bookingPage {
+.bookingContainer {
   padding: 20px;
   max-width: 500px;
   margin: 0 auto;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.bookButton {
-  padding: 10px 20px;
+.pageTitle {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.bookingForm {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+}
+
+.bookingForm label {
+  font-size: 16px;
+  color: #555;
+}
+
+.bookingForm input[type="date"] {
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.confirmButton {
+  padding: 12px 20px;
   background-color: #ff5a5f;
   color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.confirmButton:hover {
+  background-color: #ff3b4a;
+}
+
+.confirmationMessage {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #d4edda;
+  color: #155724;
+  border-radius: 5px;
   text-align: center;
 }

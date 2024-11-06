@@ -17,7 +17,11 @@ const ListingCard = ({
   return (
     <div className={styles.listingCard}>
       <Link to={`/listings/${id}`} className={styles.link}>
-        <img src={image} alt={title} className={styles.propertyImage} />
+        <img
+          src={`http://localhost:5000${image}`}
+          alt={title}
+          className={styles.propertyImage}
+        />
         <h3 className={styles.propertyTitle}>{title}</h3>
       </Link>
       <p className={styles.propertyType}>Type: {type}</p>

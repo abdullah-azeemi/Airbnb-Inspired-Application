@@ -1,21 +1,61 @@
-.detailsPage {
+.detailsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 20px;
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .propertyImage {
   width: 100%;
   height: auto;
-  border-radius: 8px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.detailsContent {
+  width: 100%;
+  text-align: left;
+}
+
+.propertyTitle {
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.propertyType {
+  color: #666;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.propertyPrice {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
 }
 
 .bookButton {
-  padding: 10px 20px;
+  display: inline-block;
+  padding: 12px 24px;
   background-color: #ff5a5f;
   color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   text-align: center;
+  text-decoration: none;
+  font-size: 18px;
+  transition: background-color 0.3s ease;
+}
+
+.bookButton:hover {
+  background-color: #ff3b4a;
 }

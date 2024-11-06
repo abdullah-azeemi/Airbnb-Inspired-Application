@@ -20,28 +20,32 @@ const BookingPage = () => {
   };
 
   return (
-    <div className={styles.bookingPage}>
-      <h1>Booking for Listing ID: {id}</h1>
-      <label>
-        Check-in Date:
-        <input
-          type="date"
-          value={checkIn}
-          onChange={(e) => setCheckIn(e.target.value)}
-        />
-      </label>
-      <label>
-        Check-out Date:
-        <input
-          type="date"
-          value={checkOut}
-          onChange={(e) => setCheckOut(e.target.value)}
-        />
-      </label>
-      <button onClick={handleBooking} className={styles.bookButton}>
-        Confirm Booking
-      </button>
-      {confirmation && <p>{confirmation.message}</p>}
+    <div className={styles.bookingContainer}>
+      <h1 className={styles.pageTitle}>Complete Your Booking</h1>
+      <div className={styles.bookingForm}>
+        <label>
+          Check-in Date:
+          <input
+            type="date"
+            value={checkIn}
+            onChange={(e) => setCheckIn(e.target.value)}
+          />
+        </label>
+        <label>
+          Check-out Date:
+          <input
+            type="date"
+            value={checkOut}
+            onChange={(e) => setCheckOut(e.target.value)}
+          />
+        </label>
+        <button onClick={handleBooking} className={styles.confirmButton}>
+          Confirm Booking
+        </button>
+      </div>
+      {confirmation && (
+        <div className={styles.confirmationMessage}>{confirmation.message}</div>
+      )}
     </div>
   );
 };

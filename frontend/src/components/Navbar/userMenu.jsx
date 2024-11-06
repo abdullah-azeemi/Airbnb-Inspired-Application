@@ -1,13 +1,18 @@
+import { Link } from "react-router-dom";
 import styles from "./userMenu.module.css";
 const UserMenu = () => {
   return (
     <div className={styles.userMenu}>
       <ul>
         <li>
-          <a href="#">Login</a>
+          <Link to="/" className={styles.userMenu}>
+            Login
+          </Link>
         </li>
         <li>
-          <a href="#">Signup</a>
+          <Link to="\" className={styles.userMenu}>
+            Signup
+          </Link>
         </li>
       </ul>
     </div>
