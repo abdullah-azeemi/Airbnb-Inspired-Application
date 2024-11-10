@@ -1,13 +1,19 @@
 const express = require("express");
+const authMiddleware = require("../middleware/authMiddleware");
+const booking = require("../models/booking");
 const router = express.Router();
 
 // Mock booking endpoint
-router.post("/", (req, res) => {
-  const { listingId, checkIn, checkOut } = req.body;
-  if (!listingId || !checkIn || !checkOut) {
-    return res.status(400).json({ message: "All fields are required" });
+router.post("/", async (req, res) => {
+  const {propertyId, checkInDate, checkOutDate, totalCost} = req.body;
+  try{
+    const booking = new booking({propertyId, checkInDate, checkOutDate, totalCost});
+    await booking.save();
+    res.status(201).json({message: "Booking created successfully.", booking });
   }
-  res.json({ message: "Booking successful", bookingDetails: req.body });
+  catch(error){
+    res.status(500).json({message: "Error Fteching Property"});
+  }
 });
 
 module.exports = router;

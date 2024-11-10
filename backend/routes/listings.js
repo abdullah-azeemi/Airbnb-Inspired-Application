@@ -1,21 +1,29 @@
 const express = require("express");
+const Property = require("../models/property");
 const router = express.Router();
-const listings = require("../data/listings.json");
+// const listings = require("../data/listings.json");
 
 // Get all listings
-router.get("/", (req, res) => {
-  res.json(listings);
+router.get("/",  async (req, res) => {
+  try{
+    const properties = await Property.find();
+    res.json(properties);
+  }
+  catch(error){
+    res.status(500).json({message: "Error Fteching Credentials"});
+  }
 });
 
 router.get("/:id", (req, res) => {
-  const id = req.params.id; 
-  console.log("Requested ID:", id); 
-  const listing = listings.find(item => item.id === id); 
-  console.log("Found Listing:", listing); 
-  if (listing) {
-    res.json(listing);
-  } else {
-    res.status(404).json({ error: "Listing not found" });
+  try{
+    const property = Property.findById(req.params.id);
+    if(!property){
+      res.status(404).json({message: "Property not found"});
+    }
+    res.json(property);
+  }
+  catch(error){
+    res.status(500).json({message: "Error Fteching Property"});
   }
 });
 
