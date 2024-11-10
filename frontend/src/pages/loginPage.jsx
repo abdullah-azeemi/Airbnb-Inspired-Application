@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "./loginPage.module.css";
+import styles from "./LoginPage.module.css";
+
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -32,32 +33,27 @@ const LoginPage = () => {
     <div className={styles.loginContainer}>
       <h2>Login</h2>
       <form onSubmit={handleSubmit} className={styles.loginForm}>
-        <label>
-          {" "}
-          Email:{" "}
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </label>
-        <label>
-          Password
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </label>
+        <label>Email:</label>
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <label>Password:</label>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
         {error && <p className={styles.error}>{error}</p>}
-        <button type="sumbit" className={styles.loginButton}>
-          {" "}
+        <button type="submit" className={styles.submitButton}>
           Login
         </button>
       </form>
     </div>
   );
 };
+
 export default LoginPage;
