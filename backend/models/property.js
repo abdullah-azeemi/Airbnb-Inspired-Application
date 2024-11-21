@@ -10,8 +10,13 @@ const propertySchema = new mongoose.Schema({
   price: { type: Number, required: true },
   rating: { type: Number, default: 0 },
   imagePath: { type: String },
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  }
+}, {
+  timestamps: true
 });
 
-const Property = mongoose.models.Property || mongoose.model("Property", propertySchema);
-
-module.exports = Property;
+module.exports = mongoose.model("Property", propertySchema);

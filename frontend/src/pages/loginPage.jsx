@@ -1,54 +1,68 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../api/axiosInstance";
 import styles from "./LoginPage.module.css";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+      const response = await axiosInstance.post("/auth/login", formData);
+      console.log("Login response:", response.data);
 
-      if (!response.ok) {
-        throw new Error("Login failed. Check your credentials and try again.");
-      }
+      // Store the token
+      localStorage.setItem("token", response.data.token);
 
-      const data = await response.json();
-      localStorage.setItem("token", data.token);
-      navigate("/");
-    } catch (err) {
-      setError(err.message);
+      // Navigate to profile page after successful login
+      navigate("/profile");
+    } catch (error) {
+      console.error("Login error:", error);
+      setError(error.response?.data?.message || "Login failed");
     }
   };
 
   return (
     <div className={styles.loginContainer}>
-      <h2>Login</h2>
+      <h1>Login</h1>
+      {error && <div className={styles.error}>{error}</div>}
       <form onSubmit={handleSubmit} className={styles.loginForm}>
-        <label>Email:</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <label>Password:</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        {error && <p className={styles.error}>{error}</p>}
-        <button type="submit" className={styles.submitButton}>
+        <div className={styles.formGroup}>
+          <label htmlFor="email">Email:</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className={styles.formGroup}>
+          <label htmlFor="password">Password:</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <button type="submit" className={styles.loginButton}>
           Login
         </button>
       </form>

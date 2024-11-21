@@ -1,0 +1,47 @@
+.propertyDetailsPage {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.propertyImage {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.propertyInfo {
+  margin-top: 20px;
+}
+
+.propertyInfo h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.propertyInfo p {
+  margin: 5px 0;
+}
+
+.price {
+  font-size: 20px;
+  font-weight: bold;
+  color: #007bff;
+}
+
+.bookNowButton {
+  margin-top: 20px;
+  padding: 10px 15px;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.bookNowButton:hover {
+  background-color: #218838;
+}

@@ -1,11 +1,17 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./navbar.module.css";
 
 const NavigationLinks = () => {
+  const navigate = useNavigate();
+  const isLoggedIn = localStorage.getItem("token");
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
   return (
     <ul className={styles.navLinks}>
       <li>
-        <Link to="\" className={styles.navLinks}>
+        <Link to="/" className={styles.navLinks}>
           Home
         </Link>
       </li>

@@ -14,16 +14,15 @@ router.get("/",  async (req, res) => {
   }
 });
 
-router.get("/:id", (req, res) => {
-  try{
-    const property = Property.findById(req.params.id);
-    if(!property){
-      res.status(404).json({message: "Property not found"});
+router.get("/:id", async (req, res) => {
+  try {
+    const property = await Property.findById(req.params.id);
+    if (!property) {
+      return res.status(404).json({ message: "Property not found" });
     }
     res.json(property);
-  }
-  catch(error){
-    res.status(500).json({message: "Error Fteching Property"});
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching property", error: error.message });
   }
 });
 

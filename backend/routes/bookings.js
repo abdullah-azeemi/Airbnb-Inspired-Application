@@ -6,6 +6,7 @@ const router = express.Router();
 router.get("/", authMiddleware, async (req, res) => {
   try {
     const userId = req.user.id;
+    console.log("user", req.user);
     const bookings = await Booking.find({ userId }).populate("listingId");
     res.status(200).json(bookings);
   } catch (error) {
@@ -17,6 +18,16 @@ router.get("/", authMiddleware, async (req, res) => {
 
 router.post("/", authMiddleware, async (req, res) => {
   const { listingId, checkIn, checkOut, totalPrice, numberOfGuests } = req.body;
+  
+  console.log("Received booking request:", {
+    listingId,
+    checkIn,
+    checkOut,
+    totalPrice,
+    numberOfGuests,
+    userId: req.user.id
+  });
+
   try {
     const booking = new Booking({ 
       listingId, 
@@ -24,13 +35,13 @@ router.post("/", authMiddleware, async (req, res) => {
       checkOut, 
       totalPrice, 
       numberOfGuests, 
-      userId: req.user.id
+      userId: req.user.id 
     });
     
     await booking.save();
     res.status(201).json({ message: "Booking created successfully.", booking });
   } catch (error) {
-    // Fix 5: Improve error message and pass the actual error
+    console.error("Error creating booking:", error);
     res.status(500).json({ message: "Error creating booking", error: error.message });
   }
 });

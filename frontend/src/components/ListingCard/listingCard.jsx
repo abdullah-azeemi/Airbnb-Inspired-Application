@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import StarRating from "./StarRating";
+import StarRating from "./starRating";
 import styles from "./listingCard.module.css";
 
 const ListingCard = ({
@@ -15,7 +15,7 @@ const ListingCard = ({
 }) => {
   return (
     <div className={styles.listingCard}>
-      <Link to={`/listings/${id}`} className={styles.imageLink}>
+      <Link to={`/properties/${id}`} className={styles.imageLink}>
         <img
           src={`http://localhost:5000${imagePath}`}
           alt={title}
@@ -23,7 +23,7 @@ const ListingCard = ({
         />
       </Link>
       <div className={styles.cardContent}>
-        <Link to={`/listings/${id}`} className={styles.titleLink}>
+        <Link to={`/properties/${id}`} className={styles.titleLink}>
           <h3 className={styles.propertyTitle}>{title}</h3>
         </Link>
         <p className={styles.propertyType}>{type}</p>
@@ -33,7 +33,7 @@ const ListingCard = ({
           {bedrooms} • <strong>Bathrooms:</strong> {bathrooms}
         </p>
         <p className={styles.price}>${price} / night</p>
-        <Link to={`/listings/${id}`} className={styles.viewDetailsButton}>
+        <Link to={`/properties/${id}`} className={styles.viewDetailsButton}>
           View Details
         </Link>
       </div>

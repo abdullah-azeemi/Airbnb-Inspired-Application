@@ -34,12 +34,17 @@ const AddPropertyPage = () => {
     if (image) propertyData.append("image", image);
 
     try {
-      await axiosInstance.post("/properties/admin/properties", propertyData, {
-        headers: { "Content-Type": "multipart/form-data" },
+      await axiosInstance.post("/properties", propertyData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
       navigate("/");
     } catch (error) {
-      setError("Failed to add property. Please try again.");
+      setError(
+        error.response?.data?.message ||
+          "Failed to add property. Please try again."
+      );
       console.error("Error adding property:", error);
     }
   };
