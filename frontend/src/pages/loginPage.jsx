@@ -1,7 +1,16 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Heading,
+  Text,
+  useToast,
+} from "@chakra-ui/react";
 import axiosInstance from "../api/axiosInstance";
-import styles from "./LoginPage.module.css";
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -10,6 +19,7 @@ const LoginPage = () => {
   });
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const toast = useToast();
 
   const handleChange = (e) => {
     setFormData({
@@ -22,51 +32,71 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       const response = await axiosInstance.post("/auth/login", formData);
-      console.log("Login response:", response.data);
-
-      // Store the token
       localStorage.setItem("token", response.data.token);
-
-      // Navigate to profile page after successful login
       navigate("/profile");
     } catch (error) {
-      console.error("Login error:", error);
       setError(error.response?.data?.message || "Login failed");
+      toast({
+        title: "Error",
+        description: error.response?.data?.message || "Login failed",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
     }
   };
 
   return (
-    <div className={styles.loginContainer}>
-      <h1>Login</h1>
-      {error && <div className={styles.error}>{error}</div>}
-      <form onSubmit={handleSubmit} className={styles.loginForm}>
-        <div className={styles.formGroup}>
-          <label htmlFor="email">Email:</label>
-          <input
+    <Box
+      maxW="md"
+      mx="auto"
+      mt={10}
+      p={5}
+      borderWidth={1}
+      borderRadius="lg"
+      boxShadow="lg"
+    >
+      <Heading as="h2" size="lg" textAlign="center" mb={5}>
+        Login
+      </Heading>
+      {error && (
+        <Text color="red.500" textAlign="center">
+          {error}
+        </Text>
+      )}
+      <form onSubmit={handleSubmit}>
+        <FormControl mb={4}>
+          <FormLabel htmlFor="email">Email</FormLabel>
+          <Input
             type="email"
             id="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
             required
+            placeholder="Enter your email"
           />
-        </div>
-        <div className={styles.formGroup}>
-          <label htmlFor="password">Password:</label>
-          <input
+        </FormControl>
+        <FormControl mb={4}>
+          <FormLabel htmlFor="password">Password</FormLabel>
+          <Input
             type="password"
             id="password"
             name="password"
             value={formData.password}
             onChange={handleChange}
             required
+            placeholder="Enter your password"
           />
-        </div>
-        <button type="submit" className={styles.loginButton}>
+        </FormControl>
+        <Button colorScheme="blue" width="full" type="submit">
           Login
-        </button>
+        </Button>
       </form>
-    </div>
+      <Text mt={4} textAlign="center">
+        Don't have an account? <Link to="/signup">Sign up</Link>
+      </Text>
+    </Box>
   );
 };
 

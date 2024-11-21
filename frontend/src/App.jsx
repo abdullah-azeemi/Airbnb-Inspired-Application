@@ -26,43 +26,45 @@ const theme = extendTheme({
 
 function App() {
   return (
-    <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignupPage />} />
-        <Route path="/properties/:id" element={<PropertyDetailsPage />} />
-        <Route path="/book/:id" element={<BookingPage />} />
-        <Route path="/bookings" element={<UserBookingsPage />} />
-        <Route path="/listings" element={<HomePage />} />
-        <Route
-          path="/profile"
-          element={
-            <PrivateRoute>
-              <ProfilePage />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/admin"
-          element={
-            <PrivateRoute>
-              <AdminPanel />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/admin/add-property"
-          element={
-            <PrivateRoute>
-              <AddPropertyPage />
-            </PrivateRoute>
-          }
-        />
-      </Routes>
-      <Footer />
-    </Router>
+    <ChakraProvider theme={theme}>
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/properties/:id" element={<PropertyDetailsPage />} />
+          <Route path="/book/:id" element={<BookingPage />} />
+          <Route path="/bookings" element={<UserBookingsPage />} />
+          <Route path="/listings" element={<HomePage />} />
+          <Route
+            path="/profile"
+            element={
+              <PrivateRoute>
+                <ProfilePage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <PrivateRoute>
+                <AdminPanel />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/add-property"
+            element={
+              <PrivateRoute>
+                <AddPropertyPage />
+              </PrivateRoute>
+            }
+          />
+        </Routes>
+        <Footer />
+      </Router>
+    </ChakraProvider>
   );
 }
 

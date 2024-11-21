@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import StarRating from "../components/ListingCard/starRating";
-import styles from "./ListingDetailsPage.module.css";
+import axiosInstance from "../api/axiosInstance";
+import styles from "./listingDetailsPage.module.css";
 
 const ListingDetailsPage = () => {
   const { id } = useParams();
@@ -11,13 +11,13 @@ const ListingDetailsPage = () => {
 
   useEffect(() => {
     const fetchListing = async () => {
+      setLoading(true);
       try {
-        const res = await fetch(`http://localhost:5000/api/listings/${id}`);
-        if (!res.ok) throw new Error("Failed to fetch listing details.");
-        const data = await res.json();
-        setListing(data);
+        const res = await axiosInstance.get(`/properties/${id}`);
+        setListing(res.data);
       } catch (err) {
-        setError(err.message);
+        setError("Failed to load property details.");
+        console.error("Error fetching property details:", err);
       } finally {
         setLoading(false);
       }
@@ -33,7 +33,6 @@ const ListingDetailsPage = () => {
   if (error) {
     return <div className={styles.error}>Error: {error}</div>;
   }
-  console.log("ListingDetailsPage - Listing ID:", id);
 
   return (
     <div className={styles.detailsContainer}>
@@ -44,34 +43,17 @@ const ListingDetailsPage = () => {
       />
       <div className={styles.detailsContent}>
         <h1 className={styles.propertyTitle}>{listing.title}</h1>
-        <StarRating rating={listing.rating} />
-        <p className={styles.propertyType}>
+        <p>{listing.description}</p>
+        <p>
           <strong>Type:</strong> {listing.type}
         </p>
         <p>
-          <strong>Guests:</strong> {listing.guests}
-        </p>
-        <p>
-          <strong>Bedrooms:</strong> {listing.bedrooms}
-        </p>
-        <p>
-          <strong>Bathrooms:</strong> {listing.bathrooms}
+          <strong>Guests:</strong> {listing.guests} • <strong>Bedrooms:</strong>{" "}
+          {listing.bedrooms} • <strong>Bathrooms:</strong> {listing.bathrooms}
         </p>
         <p className={styles.propertyPrice}>
           <strong>Price:</strong> ${listing.price} per night
         </p>
-
-        {}
-        <div className={styles.amenities}>
-          <h2>Amenities</h2>
-          <ul>
-            <li>Free Wi-Fi</li>
-            <li>Air Conditioning</li>
-            <li>Swimming Pool</li>
-            <li>Parking</li>
-          </ul>
-        </div>
-
         <Link to={`/book/${id}`} className={styles.bookButton}>
           Book Now
         </Link>

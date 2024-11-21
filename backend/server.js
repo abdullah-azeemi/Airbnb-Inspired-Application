@@ -23,6 +23,7 @@ app.use('/api',bookingRoutes);
 
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/properties", require("./routes/properties"));
+app.use("/api/user", require("./routes/user"));
 
 app.use("/api/listings", require("./routes/listings"));
 app.use("/api/bookings", require("./routes/bookings"));

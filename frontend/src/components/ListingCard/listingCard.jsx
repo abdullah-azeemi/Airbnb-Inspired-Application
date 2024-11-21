@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
-import StarRating from "./starRating";
-import styles from "./listingCard.module.css";
+import { Box, Image, Text, Heading } from "@chakra-ui/react";
+import { motion } from "framer-motion";
+
+const MotionBox = motion(Box);
 
 const ListingCard = ({
   id,
@@ -14,30 +16,41 @@ const ListingCard = ({
   rating,
 }) => {
   return (
-    <div className={styles.listingCard}>
-      <Link to={`/properties/${id}`} className={styles.imageLink}>
-        <img
-          src={`http://localhost:5000${imagePath}`}
-          alt={title}
-          className={styles.propertyImage}
-        />
-      </Link>
-      <div className={styles.cardContent}>
-        <Link to={`/properties/${id}`} className={styles.titleLink}>
-          <h3 className={styles.propertyTitle}>{title}</h3>
-        </Link>
-        <p className={styles.propertyType}>{type}</p>
-        <StarRating rating={rating} />
-        <p>
-          <strong>Guests:</strong> {guests} • <strong>Bedrooms:</strong>{" "}
-          {bedrooms} • <strong>Bathrooms:</strong> {bathrooms}
-        </p>
-        <p className={styles.price}>${price} / night</p>
-        <Link to={`/properties/${id}`} className={styles.viewDetailsButton}>
-          View Details
-        </Link>
-      </div>
-    </div>
+    <MotionBox
+      as={Link}
+      to={`/properties/${id}`}
+      borderWidth="1px"
+      borderRadius="md"
+      overflow="hidden"
+      bg="white"
+      boxShadow="md"
+      p={4}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <Image
+        src={`http://localhost:5000${imagePath}`}
+        alt={title}
+        borderRadius="md"
+        mb={4}
+        objectFit="cover"
+        h="200px"
+        w="100%"
+      />
+      <Heading size="md" mb={2}>
+        {title}
+      </Heading>
+      <Text fontSize="sm" color="gray.500" mb={2}>
+        {type} • Guests: {guests} • Bedrooms: {bedrooms} • Bathrooms:{" "}
+        {bathrooms}
+      </Text>
+      <Text fontWeight="bold" color="teal.500" mb={2}>
+        ${price} / night
+      </Text>
+    </MotionBox>
   );
 };
 

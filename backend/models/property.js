@@ -10,6 +10,7 @@ const propertySchema = new mongoose.Schema({
   price: { type: Number, required: true },
   rating: { type: Number, default: 0 },
   imagePath: { type: String },
+  location: { type: String, required: true },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

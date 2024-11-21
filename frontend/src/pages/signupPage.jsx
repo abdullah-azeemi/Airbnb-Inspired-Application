@@ -1,6 +1,15 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import styles from "./signupPage.module.css";
+import { useNavigate, Link } from "react-router-dom";
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Heading,
+  Text,
+  useToast,
+} from "@chakra-ui/react";
 
 const SignupPage = () => {
   const [name, setName] = useState("");
@@ -9,6 +18,7 @@ const SignupPage = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const toast = useToast();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,63 +34,92 @@ const SignupPage = () => {
         body: JSON.stringify({ name, email, password }),
       });
 
-      if (!response.ok) {
-        throw new Error("Signup failed. Try again with valid details.");
-      }
+      if (!response.ok) throw new Error("Signup failed");
 
-      const data = await response.json();
       navigate("/login");
-    } catch (err) {
-      setError(err.message);
+    } catch (error) {
+      setError(error.message);
+      toast({
+        title: "Error",
+        description: error.message,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
     }
   };
 
   return (
-    <div className={styles.signupContainer}>
-      <h2>Signup</h2>
-      <form onSubmit={handleSubmit} className={styles.signupForm}>
-        <label>
-          Name:
-          <input
+    <Box
+      maxW="md"
+      mx="auto"
+      mt={10}
+      p={5}
+      borderWidth={1}
+      borderRadius="lg"
+      boxShadow="lg"
+    >
+      <Heading as="h2" size="lg" textAlign="center" mb={5}>
+        Sign Up
+      </Heading>
+      {error && (
+        <Text color="red.500" textAlign="center">
+          {error}
+        </Text>
+      )}
+      <form onSubmit={handleSubmit}>
+        <FormControl mb={4}>
+          <FormLabel htmlFor="name">Name</FormLabel>
+          <Input
             type="text"
+            id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
+            placeholder="Enter your name"
           />
-        </label>
-        <label>
-          Email:
-          <input
+        </FormControl>
+        <FormControl mb={4}>
+          <FormLabel htmlFor="email">Email</FormLabel>
+          <Input
             type="email"
+            id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            placeholder="Enter your email"
           />
-        </label>
-        <label>
-          Password:
-          <input
+        </FormControl>
+        <FormControl mb={4}>
+          <FormLabel htmlFor="password">Password</FormLabel>
+          <Input
             type="password"
+            id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            placeholder="Enter your password"
           />
-        </label>
-        <label>
-          Confirm Password:
-          <input
+        </FormControl>
+        <FormControl mb={4}>
+          <FormLabel htmlFor="confirmPassword">Confirm Password</FormLabel>
+          <Input
             type="password"
+            id="confirmPassword"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
+            placeholder="Confirm your password"
           />
-        </label>
-        {error && <p className={styles.error}>{error}</p>}
-        <button type="submit" className={styles.submitButton}>
-          Signup
-        </button>
+        </FormControl>
+        <Button colorScheme="blue" width="full" type="submit">
+          Sign Up
+        </Button>
       </form>
-    </div>
+      <Text mt={4} textAlign="center">
+        Already have an account? <Link to="/login">Login</Link>
+      </Text>
+    </Box>
   );
 };
 
