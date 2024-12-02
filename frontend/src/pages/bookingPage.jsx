@@ -10,11 +10,11 @@ const BookingPage = () => {
   const [checkOut, setCheckOut] = useState("");
   const [guests, setGuests] = useState(1);
   const [listing, setListing] = useState(null);
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchListing = async () => {
-      setLoading(true); // Set loading to true before fetching
+      setLoading(true);
       try {
         const response = await axiosInstance.get(`/properties/${id}`);
         setListing(response.data);
@@ -22,12 +22,28 @@ const BookingPage = () => {
         console.error("Error fetching listing:", error);
         navigate("/listings");
       } finally {
-        setLoading(false); // Set loading to false after fetching
+        setLoading(false);
       }
     };
 
     fetchListing();
   }, [id, navigate]);
+
+  const handleSubmit = async () => {
+    try {
+      const bookingData = {
+        listingId: id,
+        checkIn,
+        checkOut,
+        numberOfGuests: guests,
+        totalPrice: listing.price * guests, // Assuming price is per guest
+      };
+      await axiosInstance.post("/bookings", bookingData);
+      navigate("/bookings"); // Redirect to bookings page after successful booking
+    } catch (error) {
+      console.error("Error creating booking:", error);
+    }
+  };
 
   if (loading) {
     return (
@@ -72,8 +88,8 @@ const BookingPage = () => {
         min="1"
         mb={4}
       />
-      <Text fontWeight="bold">Total Price: ${listing?.price}</Text>
-      <Button colorScheme="teal" mt={4}>
+      <Text fontWeight="bold">Total Price: ${listing?.price * guests}</Text>
+      <Button colorScheme="teal" mt={4} onClick={handleSubmit}>
         Confirm Booking
       </Button>
     </Box>

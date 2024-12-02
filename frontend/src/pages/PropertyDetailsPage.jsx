@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
+import { Box, Image, Heading, Text, Button } from "@chakra-ui/react";
 import axiosInstance from "../api/axiosInstance";
 import styles from "./propertyDetails.module.css";
 
@@ -25,37 +26,42 @@ const PropertyDetailsPage = () => {
   }, [id]);
 
   if (error) {
-    return <div className={styles.error}>{error}</div>;
+    return <Text color="red.500">{error}</Text>;
   }
 
   if (!property) {
-    return <div className={styles.loading}>Loading...</div>;
+    return <Text>Loading...</Text>;
   }
 
   return (
-    <div className={styles.propertyDetailsPage}>
-      <img
+    <Box className={styles.propertyDetailsPage} p={5}>
+      <Image
         src={`http://localhost:5000${property.imagePath}`}
         alt={property.title}
         className={styles.propertyImage}
+        borderRadius="md"
       />
-      <div className={styles.propertyInfo}>
-        <h1>{property.title}</h1>
-        <p>{property.description}</p>
-        <p>
+      <Box className={styles.propertyInfo} mt={4}>
+        <Heading as="h1" size="lg">
+          {property.title}
+        </Heading>
+        <Text>{property.description}</Text>
+        <Text>
           <strong>Type:</strong> {property.type}
-        </p>
-        <p>
+        </Text>
+        <Text>
           <strong>Guests:</strong> {property.guests} •{" "}
           <strong>Bedrooms:</strong> {property.bedrooms} •{" "}
           <strong>Bathrooms:</strong> {property.bathrooms}
-        </p>
-        <p className={styles.price}>${property.price} / night</p>
-        <Link to={`/book/${id}`} className={styles.bookButton}>
-          Book Now
+        </Text>
+        <Text className={styles.price}>${property.price} / night</Text>
+        <Link to={`/book/${id}`}>
+          <Button colorScheme="teal" mt={4}>
+            Book Now
+          </Button>
         </Link>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 

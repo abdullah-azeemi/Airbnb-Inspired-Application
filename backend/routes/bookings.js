@@ -46,4 +46,22 @@ router.post("/", authMiddleware, async (req, res) => {
   }
 });
 
+router.delete("/:id", authMiddleware, async (req, res) => {
+  try {
+    const booking = await Booking.findById(req.params.id);
+    if (!booking) {
+      return res.status(404).json({ message: "Booking not found" });
+    }
+    if (booking.userId.toString() !== req.user.id) {
+      return res.status(403).json({ message: "Unauthorized to cancel this booking" });
+    }
+    booking.status = 'canceled'; // Update status to canceled
+    await booking.save();
+    res.json({ message: "Booking canceled successfully", booking });
+  } catch (error) {
+    console.error("Error canceling booking:", error);
+    res.status(500).json({ message: "Error canceling booking", error });
+  }
+});
+
 module.exports = router;

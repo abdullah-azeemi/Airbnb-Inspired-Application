@@ -1,6 +1,17 @@
 import { useState, useEffect } from "react";
 import axiosInstance from "../api/axiosInstance";
 import styles from "./UserBookingsPage.module.css";
+import {
+  Box,
+  Heading,
+  Text,
+  Button,
+  SimpleGrid,
+  Card,
+  CardBody,
+  CardFooter,
+  Stack,
+} from "@chakra-ui/react";
 
 const UserBookingsPage = () => {
   const [bookings, setBookings] = useState([]);
@@ -20,43 +31,60 @@ const UserBookingsPage = () => {
     fetchBookings();
   }, []);
 
+  const handleDelete = async (id) => {
+    try {
+      await axiosInstance.delete(`/bookings/${id}`);
+      setBookings((prevBookings) =>
+        prevBookings.filter((booking) => booking._id !== id)
+      );
+    } catch (error) {
+      console.error("Error canceling booking:", error);
+    }
+  };
+
   if (error) {
-    return <div className={styles.error}>{error}</div>;
+    return <Text color="red.500">{error}</Text>;
   }
 
   if (bookings.length === 0) {
-    return <div className={styles.noBookings}>No bookings found.</div>;
+    return <Text>No bookings found.</Text>;
   }
 
   return (
-    <div className={styles.bookingsPage}>
-      <h1>Your Bookings</h1>
-      <div className={styles.bookingsList}>
+    <Box className="p-5 bg-gray-50 min-h-screen">
+      <Heading as="h1" size="lg" mb={4} textAlign="center" color="teal.600">
+        Your Bookings
+      </Heading>
+      <SimpleGrid columns={{ base: 1, md: 2 }} spacing={5}>
         {bookings.map((booking) => (
-          <div key={booking._id} className={styles.bookingCard}>
-            <img
-              src={`http://localhost:5000${booking.propertyId.imagePath}`}
-              alt={booking.propertyId.title}
-              className={styles.bookingImage}
-            />
-            <div className={styles.bookingDetails}>
-              <h2>{booking.propertyId.title}</h2>
-              <p>
-                <strong>Check-in:</strong>{" "}
-                {new Date(booking.checkInDate).toLocaleDateString()}
-              </p>
-              <p>
-                <strong>Check-out:</strong>{" "}
-                {new Date(booking.checkOutDate).toLocaleDateString()}
-              </p>
-              <p>
-                <strong>Total Cost:</strong> ${booking.totalCost}
-              </p>
-            </div>
-          </div>
+          <Card key={booking._id} variant="outline">
+            <CardBody>
+              <Stack spacing="3">
+                <Text fontWeight="bold">
+                  {booking.listingId
+                    ? booking.listingId.title
+                    : "Listing not found"}
+                </Text>
+                <Text>
+                  Check-in: {new Date(booking.checkIn).toLocaleDateString()} -
+                  Check-out: {new Date(booking.checkOut).toLocaleDateString()}
+                </Text>
+                <Text>Total Price: ${booking.totalPrice}</Text>
+                <Text>Status: {booking.status}</Text>
+              </Stack>
+            </CardBody>
+            <CardFooter>
+              <Button
+                colorScheme="red"
+                onClick={() => handleDelete(booking._id)}
+              >
+                Cancel Booking
+              </Button>
+            </CardFooter>
+          </Card>
         ))}
-      </div>
-    </div>
+      </SimpleGrid>
+    </Box>
   );
 };
 

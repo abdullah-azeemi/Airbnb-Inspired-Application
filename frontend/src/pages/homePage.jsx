@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { SimpleGrid, Box, Text, Spinner } from "@chakra-ui/react";
 import axiosInstance from "../api/axiosInstance";
-import ListingCard from "../components/ListingCard/ListingCard";
+import ListingCard from "../components/ListingCard/listingCard";
 import SearchBar from "../components/Searchbar/searchBar";
 
 const HomePage = () => {
