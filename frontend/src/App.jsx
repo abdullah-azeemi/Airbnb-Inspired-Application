@@ -7,11 +7,11 @@ import LoginPage from "./pages/loginPage";
 import SignupPage from "./pages/signupPage";
 import ProfilePage from "./pages/profilePage";
 import AdminPanel from "./pages/adminPanel";
-import AddPropertyPage from "./pages/addPropertyPage";
 import PrivateRoute from "./components/PrivateRoute/privateRoute";
 import BookingPage from "./pages/bookingPage";
 import PropertyDetailsPage from "./pages/PropertyDetailsPage";
 import UserBookingsPage from "./pages/userBookingsPage";
+import AddPropertyPage from "./pages/addPropertyPage";
 // import styles from "./App.module.css";
 
 const theme = extendTheme({
@@ -61,6 +61,7 @@ function App() {
               </PrivateRoute>
             }
           />
+          <Route path="/admin/add-property" element={<AddPropertyPage />} />
         </Routes>
         <Footer />
       </Router>

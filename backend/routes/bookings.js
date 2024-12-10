@@ -47,20 +47,24 @@ router.post("/", authMiddleware, async (req, res) => {
 });
 
 router.delete("/:id", authMiddleware, async (req, res) => {
+  console.log("Delete request for booking ID:", req.params.id);
+  console.log("User ID from token:", req.user.id);
   try {
     const booking = await Booking.findById(req.params.id);
+    console.log("Booking found:", booking);
     if (!booking) {
       return res.status(404).json({ message: "Booking not found" });
     }
+    console.log("Booking user ID:", booking.userId.toString());
     if (booking.userId.toString() !== req.user.id) {
       return res.status(403).json({ message: "Unauthorized to cancel this booking" });
     }
-    booking.status = 'canceled'; // Update status to canceled
+    booking.status = 'cancelled'; // Update status to cancelled
     await booking.save();
     res.json({ message: "Booking canceled successfully", booking });
   } catch (error) {
     console.error("Error canceling booking:", error);
-    res.status(500).json({ message: "Error canceling booking", error });
+    res.status(500).json({ message: "Error canceling booking", error: error.message });
   }
 });
 

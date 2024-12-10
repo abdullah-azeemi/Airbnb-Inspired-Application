@@ -1,112 +1,158 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import {
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Textarea,
+  Heading,
+  useToast,
+} from "@chakra-ui/react";
+import { motion } from "framer-motion";
 import axiosInstance from "../api/axiosInstance";
-import styles from "./addPropertyPage.module.css";
+
+const MotionBox = motion(Box);
 
 const AddPropertyPage = () => {
-  const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    type: "",
-    guests: 1,
-    bedrooms: 1,
-    bathrooms: 1,
-    price: 0,
-  });
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
   const [image, setImage] = useState(null);
-  const [error, setError] = useState(null);
-  const navigate = useNavigate();
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const [propertyType, setPropertyType] = useState("");
+  const [guests, setGuests] = useState(1);
+  const [bedrooms, setBedrooms] = useState(1);
+  const [bathrooms, setBathrooms] = useState(1);
+  const toast = useToast();
 
   const handleImageChange = (e) => {
     setImage(e.target.files[0]);
   };
 
-  const handleSubmit = async (e) => {
+  const handleAddProperty = async (e) => {
     e.preventDefault();
-    const propertyData = new FormData();
-    Object.keys(formData).forEach((key) =>
-      propertyData.append(key, formData[key])
-    );
-    if (image) propertyData.append("image", image);
-
     try {
-      await axiosInstance.post("/properties", propertyData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("description", description);
+      formData.append("type", propertyType);
+      formData.append("guests", guests);
+      formData.append("bedrooms", bedrooms);
+      formData.append("bathrooms", bathrooms);
+      formData.append("price", price);
+      if (image) {
+        formData.append("image", image);
+      }
+
+      // Log the form data
+      for (let pair of formData.entries()) {
+        console.log(`${pair[0]}: ${pair[1]}`);
+      }
+
+      const response = await axiosInstance.post("/properties", formData);
+      console.log("Property created:", response.data);
+      toast({
+        title: "Property added.",
+        description: "Your property has been added successfully.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
       });
-      navigate("/");
     } catch (error) {
-      setError(
-        error.response?.data?.message ||
-          "Failed to add property. Please try again."
+      console.error(
+        "Error creating property:",
+        error.response ? error.response.data : error
       );
-      console.error("Error adding property:", error);
+      toast({
+        title: "Error.",
+        description: "Failed to add property.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     }
   };
 
   return (
-    <div className={styles.addPropertyContainer}>
-      <h2>Add New Property</h2>
-      <form onSubmit={handleSubmit} className={styles.propertyForm}>
-        <label>Title:</label>
-        <input type="text" name="title" onChange={handleChange} required />
-
-        <label>Description:</label>
-        <textarea name="description" onChange={handleChange} required />
-
-        <label>Type:</label>
-        <input type="text" name="type" onChange={handleChange} required />
-
-        <label>Guests:</label>
-        <input
-          type="number"
-          name="guests"
-          min="1"
-          onChange={handleChange}
-          required
-        />
-
-        <label>Bedrooms:</label>
-        <input
-          type="number"
-          name="bedrooms"
-          min="1"
-          onChange={handleChange}
-          required
-        />
-
-        <label>Bathrooms:</label>
-        <input
-          type="number"
-          name="bathrooms"
-          min="1"
-          onChange={handleChange}
-          required
-        />
-
-        <label>Price:</label>
-        <input
-          type="number"
-          name="price"
-          min="0"
-          onChange={handleChange}
-          required
-        />
-
-        <label>Image:</label>
-        <input type="file" accept="image/*" onChange={handleImageChange} />
-
-        {error && <p className={styles.error}>{error}</p>}
-        <button type="submit" className={styles.submitButton}>
+    <MotionBox
+      p={5}
+      borderRadius="lg"
+      boxShadow="lg"
+      bg="white"
+      maxW="lg"
+      mx="auto"
+      mt={10}
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <Heading as="h2" mb={4} textAlign="center">
+        Add New Property
+      </Heading>
+      <form onSubmit={handleAddProperty}>
+        <FormControl isRequired mb={4}>
+          <FormLabel>Title</FormLabel>
+          <Input value={title} onChange={(e) => setTitle(e.target.value)} />
+        </FormControl>
+        <FormControl isRequired mb={4}>
+          <FormLabel>Description</FormLabel>
+          <Textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </FormControl>
+        <FormControl isRequired mb={4}>
+          <FormLabel>Price</FormLabel>
+          <Input
+            type="number"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+          />
+        </FormControl>
+        <FormControl isRequired mb={4}>
+          <FormLabel>Image</FormLabel>
+          <Input type="file" accept="image/*" onChange={handleImageChange} />
+        </FormControl>
+        <FormControl isRequired mb={4}>
+          <FormLabel>Property Type</FormLabel>
+          <Input
+            type="text"
+            value={propertyType}
+            onChange={(e) => setPropertyType(e.target.value)}
+          />
+        </FormControl>
+        <FormControl isRequired mb={4}>
+          <FormLabel>Guests</FormLabel>
+          <Input
+            type="number"
+            value={guests}
+            onChange={(e) => setGuests(e.target.value)}
+            min={1}
+          />
+        </FormControl>
+        <FormControl isRequired mb={4}>
+          <FormLabel>Bedrooms</FormLabel>
+          <Input
+            type="number"
+            value={bedrooms}
+            onChange={(e) => setBedrooms(e.target.value)}
+            min={1}
+          />
+        </FormControl>
+        <FormControl isRequired mb={4}>
+          <FormLabel>Bathrooms</FormLabel>
+          <Input
+            type="number"
+            value={bathrooms}
+            onChange={(e) => setBathrooms(e.target.value)}
+            min={1}
+          />
+        </FormControl>
+        <Button colorScheme="teal" type="submit" width="full">
           Add Property
-        </button>
+        </Button>
       </form>
-    </div>
+    </MotionBox>
   );
 };
 

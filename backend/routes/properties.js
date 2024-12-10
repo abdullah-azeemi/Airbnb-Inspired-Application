@@ -20,8 +20,10 @@ router.get("/my-listings", authMiddleware, async (req, res) => {
 });
 
 router.get("/", async (req, res) => {
+  const { search } = req.query; 
   try {
-    const properties = await Property.find();
+    const query = search ? { title: { $regex: search, $options: "i" } } : {};
+    const properties = await Property.find(query);
     res.json(properties);
   } catch (error) {
     res.status(500).json({ message: "Error fetching properties", error });
@@ -40,8 +42,10 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+// POST endpoint to add a property
 router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
   try {
+    console.log("Request body:", req.body); // Debug log
     const { title, description, type, guests, bedrooms, bathrooms, price } = req.body;
     const imagePath = req.file ? `/uploads/${req.file.filename}` : null;
 
@@ -54,15 +58,17 @@ router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
       bathrooms,
       price,
       imagePath,
-      owner: req.user.id
+      owner: req.user.id,
     });
-    
+
     await newProperty.save();
     res.status(201).json({ message: "Property added successfully", property: newProperty });
   } catch (error) {
-    res.status(500).json({ message: "Error adding property", error });
+    console.error("Error creating property:", error);
+    res.status(500).json({ message: "Error creating property", error });
   }
 });
+
 
 router.put("/:id", authMiddleware, upload.single("image"), async (req, res) => {
   try {
@@ -105,25 +111,23 @@ router.delete("/:id", authMiddleware, async (req, res) => {
   }
 });
 
-router.get('/properties/search', async (req, res) => {
+router.get("/search", async (req, res) => {
+  const { query } = req.query;
+  if (!query) {
+    return res.status(400).json({ message: "Query parameter is required" });
+  }
   try {
-    const { query } = req.query;
-    if (!query) {
-      return res.status(400).json({ message: 'Query parameter is required' });
-    }
     const searchQuery = {
       $or: [
         { title: { $regex: query, $options: 'i' } },
-        { description: { $regex: query, $options: 'i' } },
-        { location: { $regex: query, $options: 'i' } }
+        { description: { $regex: query, $options: 'i' } }
       ]
     };
-    
     const properties = await Property.find(searchQuery);
     res.json(properties);
   } catch (error) {
-    console.error('Error searching properties:', error);
-    res.status(500).json({ message: 'Error searching properties', error });
+    console.error("Error searching properties:", error);
+    res.status(500).json({ message: "Error searching properties", error });
   }
 });
 
