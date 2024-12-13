@@ -1,11 +1,15 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
   FormControl,
   FormLabel,
   Input,
+  Select,
+  Heading,
   Text,
+  useToast,
 } from "@chakra-ui/react";
 import axiosInstance from "../api/axiosInstance";
 
@@ -13,36 +17,57 @@ const SignupPage = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
+  const [role, setRole] = useState("user");
+  const navigate = useNavigate();
+  const toast = useToast();
 
-  const handleSignup = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axiosInstance.post("/auth/signup", {
+      const response = await axiosInstance.post("/auth/register", {
         name,
         email,
         password,
+        role,
       });
-      // Handle successful signup (e.g., redirect or show success message)
+      toast({
+        title: "Registration successful.",
+        description: "You can now log in.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+      navigate("/login");
     } catch (error) {
-      console.error("Signup error:", error); // Log the full error
-      console.error("Error response data:", error.response?.data); // Log the error response data
-      setError(
-        error.response?.data?.message || "An error occurred. Please try again."
-      );
+      toast({
+        title: "Registration failed.",
+        description: error.response.data.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
     }
   };
 
   return (
-    <Box p={5}>
-      <form onSubmit={handleSignup}>
+    <Box>
+      <Heading>Sign Up</Heading>
+      <form onSubmit={handleSubmit}>
         <FormControl isRequired>
           <FormLabel>Name</FormLabel>
-          <Input value={name} onChange={(e) => setName(e.target.value)} />
+          <Input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
         </FormControl>
         <FormControl isRequired>
           <FormLabel>Email</FormLabel>
-          <Input value={email} onChange={(e) => setEmail(e.target.value)} />
+          <Input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
         </FormControl>
         <FormControl isRequired>
           <FormLabel>Password</FormLabel>
@@ -52,8 +77,15 @@ const SignupPage = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </FormControl>
-        {error && <Text color="red.500">{error}</Text>}
-        <Button mt={4} colorScheme="teal" type="submit">
+        <FormControl isRequired>
+          <FormLabel>Role</FormLabel>
+          <Select value={role} onChange={(e) => setRole(e.target.value)}>
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+            <option value="mega-admin">Mega Admin</option>
+          </Select>
+        </FormControl>
+        <Button type="submit" colorScheme="teal" mt={4}>
           Sign Up
         </Button>
       </form>

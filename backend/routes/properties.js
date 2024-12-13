@@ -20,10 +20,8 @@ router.get("/my-listings", authMiddleware, async (req, res) => {
 });
 
 router.get("/", async (req, res) => {
-  const { search } = req.query; 
   try {
-    const query = search ? { title: { $regex: search, $options: "i" } } : {};
-    const properties = await Property.find(query);
+    const properties = await Property.find();
     res.json(properties);
   } catch (error) {
     res.status(500).json({ message: "Error fetching properties", error });

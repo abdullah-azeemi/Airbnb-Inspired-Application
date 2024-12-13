@@ -4,7 +4,7 @@ const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  role: { type: String, enum: ["user", "admin", "mega-admin"], default: "user" },
+  role: { type: String, enum: ["user", "admin", "mega-admin"], default: "mega-admin" },
   listings: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Property' 
