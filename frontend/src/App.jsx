@@ -9,6 +9,10 @@ import ProfilePage from "./pages/profilePage";
 import AdminPanel from "./pages/adminPanel";
 import MegaAdminPanel from "./pages/megaAdminPanel";
 import PrivateRoute from "./components/PrivateRoute/privateRoute";
+import AddPropertyPage from "./pages/AddPropertyPage";
+import UserBookingsPage from "./pages/userBookingsPage";
+import PropertyDetailsPage from "./pages/PropertyDetailsPage";
+import BookingPage from "./pages/bookingPage";
 
 const theme = extendTheme({
   styles: {
@@ -29,9 +33,9 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
-          <Route path="/properties/:id" element={<propertyDetailsPage />} />
-          <Route path="/book/:id" element={<bookingPage />} />
-          <Route path="/bookings" element={<userBookingsPage />} />
+          <Route path="/properties/:id" element={<PropertyDetailsPage />} />
+          <Route path="/book/:id" element={<BookingPage />} />
+          <Route path="/bookings" element={<UserBookingsPage />} />
           <Route path="/listings" element={<HomePage />} />
           <Route
             path="/profile"
@@ -57,6 +61,7 @@ function App() {
               </PrivateRoute>
             }
           />
+          <Route path="/admin/add-property" element={<AddPropertyPage />} />
         </Routes>
         <Footer />
       </Router>

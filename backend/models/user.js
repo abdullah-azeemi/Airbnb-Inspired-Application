@@ -4,11 +4,12 @@ const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  role: { type: String, enum: ["user", "admin", "mega-admin"], default: "mega-admin" },
+  role: { type: String, enum: ["user", "admin", "mega-admin"], default: "user" },
   listings: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Property' 
   }],
+  totalSpent: { type: Number, default: 0 },
 });
 
 module.exports = mongoose.model("User", userSchema);

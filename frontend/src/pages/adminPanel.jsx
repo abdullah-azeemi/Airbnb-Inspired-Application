@@ -19,7 +19,6 @@ import {
   SimpleGrid,
   Card,
   CardBody,
-  Image,
   Stack,
 } from "@chakra-ui/react";
 import axiosInstance from "../api/axiosInstance";
@@ -137,12 +136,21 @@ const AdminPanel = () => {
                     overflow="hidden"
                     boxShadow="md"
                   >
-                    <Image src={listing.imageUrl} alt={listing.title} />
                     <CardBody>
                       <Stack spacing={3}>
                         <Heading size="md">{listing.title}</Heading>
                         <Text>{listing.description}</Text>
-                        <Text fontWeight="bold">${listing.price}</Text>
+                        <Text fontWeight="bold">Price: ${listing.price}</Text>
+                        <Text>Type: {listing.type}</Text>
+                        <Text>Guests: {listing.guests}</Text>
+                        <Text>Bedrooms: {listing.bedrooms}</Text>
+                        <Text>Bathrooms: {listing.bathrooms}</Text>
+                        <Text fontWeight="bold">
+                          Listed by: {listing.userName}
+                        </Text>
+                        <Text fontWeight="bold">
+                          User Email: {listing.userEmail}
+                        </Text>
                         <Badge
                           colorScheme={
                             listing.status === "available" ? "green" : "red"

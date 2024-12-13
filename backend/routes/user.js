@@ -13,22 +13,22 @@ router.get("/profile", authMiddleware, async (req, res) => {
 
     const totalBookingsLastMonth = await Booking.countDocuments({
       userId,
-      createdAt: { $gte: new Date(new Date().setDate(new Date().getDate() - 30)) }
+      createdAt: { $gte: new Date(new Date().setDate(new Date().getDate() - 30)) },
     });
 
     const totalListingsLastMonth = await Property.countDocuments({
       owner: userId,
-      createdAt: { $gte: new Date(new Date().setDate(new Date().getDate() - 30)) }
+      createdAt: { $gte: new Date(new Date().setDate(new Date().getDate() - 30)) },
     });
 
     const totalSpent = await Booking.aggregate([
       { $match: { userId } },
-      { $group: { _id: null, total: { $sum: "$totalCost" } } }
+      { $group: { _id: null, total: { $sum: "$totalPrice" } } },
     ]);
 
-    const totalEarned = await Property.aggregate([
-      { $match: { owner: userId } },
-      { $group: { _id: null, total: { $sum: "$earnings" } } }
+    const totalEarned = await Booking.aggregate([
+      { $match: { ownerId: userId } },
+      { $group: { _id: null, total: { $sum: "$totalPrice" } } },
     ]);
 
     res.json({
@@ -36,7 +36,7 @@ router.get("/profile", authMiddleware, async (req, res) => {
       totalListingsLastMonth,
       totalSpent: totalSpent[0]?.total || 0,
       totalEarned: totalEarned[0]?.total || 0,
-      listings: user.listings
+      listings: user.listings,
     });
   } catch (error) {
     res.status(500).json({ message: "Error fetching user profile", error });

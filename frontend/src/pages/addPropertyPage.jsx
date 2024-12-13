@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import axiosInstance from "../api/axiosInstance";
+import { useNavigate } from "react-router-dom";
 
 const MotionBox = motion(Box);
 
@@ -24,6 +25,7 @@ const AddPropertyPage = () => {
   const [bedrooms, setBedrooms] = useState(1);
   const [bathrooms, setBathrooms] = useState(1);
   const toast = useToast();
+  const navigate = useNavigate();
 
   const handleImageChange = (e) => {
     setImage(e.target.files[0]);
@@ -49,7 +51,11 @@ const AddPropertyPage = () => {
         console.log(`${pair[0]}: ${pair[1]}`);
       }
 
-      const response = await axiosInstance.post("/properties", formData);
+      const response = await axiosInstance.post("/properties", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       console.log("Property created:", response.data);
       toast({
         title: "Property added.",
@@ -58,6 +64,7 @@ const AddPropertyPage = () => {
         duration: 5000,
         isClosable: true,
       });
+      navigate("/");
     } catch (error) {
       console.error(
         "Error creating property:",

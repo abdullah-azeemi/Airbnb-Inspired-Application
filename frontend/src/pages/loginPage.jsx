@@ -59,11 +59,6 @@ const LoginPage = () => {
       <Heading as="h2" size="lg" textAlign="center" mb={5}>
         Login
       </Heading>
-      {error && (
-        <Text color="red.500" textAlign="center">
-          {error}
-        </Text>
-      )}
       <form onSubmit={handleSubmit}>
         <FormControl mb={4}>
           <FormLabel htmlFor="email">Email</FormLabel>

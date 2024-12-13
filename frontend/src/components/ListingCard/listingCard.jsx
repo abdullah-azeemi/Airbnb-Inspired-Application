@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Box, Image, Text, Heading } from "@chakra-ui/react";
 import { motion } from "framer-motion";
+import PropTypes from "prop-types";
 
 const MotionBox = motion(Box);
 
@@ -52,6 +53,18 @@ const ListingCard = ({
       </Text>
     </MotionBox>
   );
+};
+
+ListingCard.propTypes = {
+  id: PropTypes.string.isRequired,
+  imagePath: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  guests: PropTypes.number.isRequired,
+  bedrooms: PropTypes.number.isRequired,
+  bathrooms: PropTypes.number.isRequired,
+  price: PropTypes.number.isRequired,
+  rating: PropTypes.number,
 };
 
 export default ListingCard;

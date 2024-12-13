@@ -1,6 +1,8 @@
 const express = require("express");
 const {authMiddleware} = require("../middleware/authMiddleware");
 const Booking = require("../models/booking");
+const User = require("../models/user");
+const Property = require("../models/property");
 const router = express.Router();
 
 router.get("/", authMiddleware, async (req, res) => {
@@ -17,28 +19,35 @@ router.get("/", authMiddleware, async (req, res) => {
 
 
 router.post("/", authMiddleware, async (req, res) => {
-  const { listingId, checkIn, checkOut, totalPrice, numberOfGuests } = req.body;
-  
-  console.log("Received booking request:", {
-    listingId,
-    checkIn,
-    checkOut,
-    totalPrice,
-    numberOfGuests,
-    userId: req.user.id
-  });
+  const { listingId, checkIn, checkOut, numberOfGuests } = req.body;
 
   try {
-    const booking = new Booking({ 
-      listingId, 
-      checkIn, 
-      checkOut, 
-      totalPrice, 
-      numberOfGuests, 
-      userId: req.user.id 
+    const property = await Property.findById(listingId);
+    if (!property) {
+      return res.status(404).json({ message: "Property not found" });
+    }
+
+    const totalPrice = property.price * numberOfGuests;
+
+    const booking = new Booking({
+      listingId,
+      checkIn,
+      checkOut,
+      totalPrice,
+      numberOfGuests,
+      userId: req.user.id,
     });
-    
+
     await booking.save();
+
+    await User.findByIdAndUpdate(req.user.id, {
+      $inc: { totalSpent: totalPrice },
+    });
+
+    await User.findByIdAndUpdate(property.owner, {
+      $inc: { totalEarned: totalPrice },
+    });
+
     res.status(201).json({ message: "Booking created successfully.", booking });
   } catch (error) {
     console.error("Error creating booking:", error);

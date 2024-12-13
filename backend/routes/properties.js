@@ -41,28 +41,22 @@ router.get("/:id", async (req, res) => {
 });
 
 // POST endpoint to add a property
-router.post("/", authMiddleware, upload.single("image"), async (req, res) => {
+router.post("/", authMiddleware, async (req, res) => {
   try {
-    console.log("Request body:", req.body); // Debug log
-    const { title, description, type, guests, bedrooms, bathrooms, price } = req.body;
-    const imagePath = req.file ? `/uploads/${req.file.filename}` : null;
-
     const newProperty = new Property({
-      title,
-      description,
-      type,
-      guests,
-      bedrooms,
-      bathrooms,
-      price,
-      imagePath,
-      owner: req.user.id,
+      title: req.body.title,
+      description: req.body.description,
+      price: req.body.price,
+      type: req.body.type,
+      guests: req.body.guests,
+      bedrooms: req.body.bedrooms,
+      bathrooms: req.body.bathrooms,
+      userName: req.user.name,
+      userEmail: req.user.email,
     });
-
     await newProperty.save();
-    res.status(201).json({ message: "Property added successfully", property: newProperty });
+    res.status(201).json(newProperty);
   } catch (error) {
-    console.error("Error creating property:", error);
     res.status(500).json({ message: "Error creating property", error });
   }
 });
