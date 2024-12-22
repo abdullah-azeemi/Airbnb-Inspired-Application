@@ -12,6 +12,7 @@ import {
   Stack,
   Badge,
 } from "@chakra-ui/react";
+import StarRating from "../components/ListingCard/starRating";
 
 const statusStyles = {
   pending: { colorScheme: "yellow" },
@@ -73,44 +74,49 @@ const UserBookingsPage = () => {
         Your Bookings
       </Heading>
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={5}>
-        {bookings.map((booking) => {
-          return (
-            <Card key={booking._id} variant="outline">
-              <CardBody>
-                <Stack spacing={3}>
-                  <Text fontWeight="bold" fontSize="lg">
-                    {booking.listingId
-                      ? booking.listingId.title
-                      : "Listing not found"}
-                  </Text>
-                  <Badge
-                    colorScheme={statusStyles[booking.status]?.colorScheme}
-                    borderRadius="md"
-                    px={2}
-                    py={1}
+        {bookings
+          .slice()
+          .reverse()
+          .map((booking) => {
+            return (
+              <Card key={booking._id} variant="outline">
+                <CardBody>
+                  <Stack spacing={3}>
+                    <Text fontWeight="bold" fontSize="lg">
+                      {booking.listingId
+                        ? booking.listingId.title
+                        : "Listing not found"}
+                    </Text>
+                    <StarRating rating={4.5} />
+                    <Badge
+                      colorScheme={statusStyles[booking.status]?.colorScheme}
+                      borderRadius="md"
+                      px={2}
+                      py={1}
+                    >
+                      {booking.status.charAt(0).toUpperCase() +
+                        booking.status.slice(1)}
+                    </Badge>
+                    <Text>
+                      Check-in: {new Date(booking.checkIn).toLocaleDateString()}{" "}
+                      - Check-out:{" "}
+                      {new Date(booking.checkOut).toLocaleDateString()}
+                    </Text>
+                    <Text>Total Price: ${booking.totalPrice}</Text>
+                    <Text>Status: {booking.status}</Text>
+                  </Stack>
+                </CardBody>
+                <CardFooter>
+                  <Button
+                    colorScheme="red"
+                    onClick={() => handleDelete(booking._id)}
                   >
-                    {booking.status.charAt(0).toUpperCase() +
-                      booking.status.slice(1)}
-                  </Badge>
-                  <Text>
-                    Check-in: {new Date(booking.checkIn).toLocaleDateString()} -
-                    Check-out: {new Date(booking.checkOut).toLocaleDateString()}
-                  </Text>
-                  <Text>Total Price: ${booking.totalPrice}</Text>
-                  <Text>Status: {booking.status}</Text>
-                </Stack>
-              </CardBody>
-              <CardFooter>
-                <Button
-                  colorScheme="red"
-                  onClick={() => handleDelete(booking._id)}
-                >
-                  Cancel Booking
-                </Button>
-              </CardFooter>
-            </Card>
-          );
-        })}
+                    Cancel Booking
+                  </Button>
+                </CardFooter>
+              </Card>
+            );
+          })}
       </SimpleGrid>
     </Box>
   );

@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { Box, Image, Heading, Text, Button } from "@chakra-ui/react";
 import axiosInstance from "../api/axiosInstance";
 import styles from "./propertyDetails.module.css";
+import StarRating from "../components/ListingCard/starRating";
 
 const PropertyDetailsPage = () => {
   const { id } = useParams();
@@ -45,6 +46,7 @@ const PropertyDetailsPage = () => {
         <Heading as="h1" size="lg">
           {property.title}
         </Heading>
+        <StarRating rating={4.5} />
         <Text>{property.description}</Text>
         <Text>
           <strong>Type:</strong> {property.type}

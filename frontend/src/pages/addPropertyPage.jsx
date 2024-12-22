@@ -8,6 +8,7 @@ import {
   Textarea,
   Heading,
   useToast,
+  Select,
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import axiosInstance from "../api/axiosInstance";
@@ -27,6 +28,15 @@ const AddPropertyPage = () => {
   const toast = useToast();
   const navigate = useNavigate();
 
+  const propertyTypes = [
+    "House",
+    "Beachfront",
+    "Cabin",
+    "Apartment",
+    "Villa",
+    "Lakefront",
+  ];
+
   const handleImageChange = (e) => {
     setImage(e.target.files[0]);
   };
@@ -34,45 +44,67 @@ const AddPropertyPage = () => {
   const handleAddProperty = async (e) => {
     e.preventDefault();
     try {
+      const token = localStorage.getItem("token");
+
+      // Basic validation
+      if (
+        !title ||
+        !description ||
+        !propertyType ||
+        !price ||
+        !guests ||
+        !bedrooms ||
+        !bathrooms
+      ) {
+        toast({
+          title: "Error",
+          description: "Please fill in all required fields",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+        return;
+      }
+
       const formData = new FormData();
       formData.append("title", title);
       formData.append("description", description);
       formData.append("type", propertyType);
-      formData.append("guests", guests);
-      formData.append("bedrooms", bedrooms);
-      formData.append("bathrooms", bathrooms);
-      formData.append("price", price);
+      formData.append("price", price.toString());
+      formData.append("guests", guests.toString());
+      formData.append("bedrooms", bedrooms.toString());
+      formData.append("bathrooms", bathrooms.toString());
+
       if (image) {
         formData.append("image", image);
       }
 
-      // Log the form data
-      for (let pair of formData.entries()) {
-        console.log(`${pair[0]}: ${pair[1]}`);
+      // Debug log
+      for (let [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`);
       }
 
       const response = await axiosInstance.post("/properties", formData, {
         headers: {
+          Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
         },
       });
+
       console.log("Property created:", response.data);
       toast({
-        title: "Property added.",
-        description: "Your property has been added successfully.",
+        title: "Success",
+        description: "Property added successfully",
         status: "success",
         duration: 5000,
         isClosable: true,
       });
       navigate("/");
     } catch (error) {
-      console.error(
-        "Error creating property:",
-        error.response ? error.response.data : error
-      );
+      console.error("Error creating property:", error.response?.data || error);
       toast({
-        title: "Error.",
-        description: "Failed to add property.",
+        title: "Error",
+        description: error.response?.data?.message || "Failed to add property",
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -122,11 +154,17 @@ const AddPropertyPage = () => {
         </FormControl>
         <FormControl isRequired mb={4}>
           <FormLabel>Property Type</FormLabel>
-          <Input
-            type="text"
+          <Select
             value={propertyType}
             onChange={(e) => setPropertyType(e.target.value)}
-          />
+            placeholder="Select Property Type"
+          >
+            {propertyTypes.map((type) => (
+              <option key={type} value={type}>
+                {type}
+              </option>
+            ))}
+          </Select>
         </FormControl>
         <FormControl isRequired mb={4}>
           <FormLabel>Guests</FormLabel>

@@ -15,11 +15,11 @@ import {
   Tr,
   Th,
   Td,
-  Badge,
   SimpleGrid,
   Card,
   CardBody,
   Stack,
+  Image,
 } from "@chakra-ui/react";
 import axiosInstance from "../api/axiosInstance";
 
@@ -75,6 +75,10 @@ const AdminPanel = () => {
     }
   };
 
+  if (loadingUsers || loadingListings) {
+    return <Text>Loading...</Text>;
+  }
+
   return (
     <Box p={5}>
       <Heading mb={4}>Admin Panel</Heading>
@@ -91,85 +95,72 @@ const AdminPanel = () => {
 
         <TabPanels>
           <TabPanel>
-            {loadingUsers ? (
-              <Text>Loading users...</Text>
-            ) : (
-              <Table variant="simple">
-                <Thead>
-                  <Tr>
-                    <Th>Name</Th>
-                    <Th>Email</Th>
-                    <Th>Total Listings</Th>
-                    <Th>Actions</Th>
+            <Table variant="simple">
+              <Thead>
+                <Tr>
+                  <Th>Name</Th>
+                  <Th>Email</Th>
+                  <Th>Total Listings</Th>
+                  <Th>Actions</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {users.map((user) => (
+                  <Tr key={user._id}>
+                    <Td>{user.name}</Td>
+                    <Td>{user.email}</Td>
+                    <Td>
+                      {
+                        listings.filter((listing) => listing.owner === user._id)
+                          .length
+                      }
+                    </Td>
+                    <Td>
+                      <Button
+                        colorScheme="red"
+                        onClick={() => handleDeleteUser(user._id)}
+                      >
+                        Delete
+                      </Button>
+                    </Td>
                   </Tr>
-                </Thead>
-                <Tbody>
-                  {users.map((user) => (
-                    <Tr key={user._id}>
-                      <Td>{user.name}</Td>
-                      <Td>{user.email}</Td>
-                      <Td>{user.listings ? user.listings.length : 0}</Td>
-                      <Td>
-                        <Button
-                          colorScheme="red"
-                          onClick={() => handleDeleteUser(user._id)}
-                        >
-                          Delete
-                        </Button>
-                      </Td>
-                    </Tr>
-                  ))}
-                </Tbody>
-              </Table>
-            )}
+                ))}
+              </Tbody>
+            </Table>
           </TabPanel>
           <TabPanel>
-            {loadingListings ? (
-              <Text>Loading listings...</Text>
-            ) : (
-              <SimpleGrid columns={{ base: 1, md: 2 }} spacing={5}>
-                {listings.map((listing) => (
-                  <Card
-                    key={listing._id}
-                    borderWidth="1px"
-                    borderRadius="lg"
-                    overflow="hidden"
-                    boxShadow="md"
-                  >
-                    <CardBody>
-                      <Stack spacing={3}>
-                        <Heading size="md">{listing.title}</Heading>
-                        <Text>{listing.description}</Text>
-                        <Text fontWeight="bold">Price: ${listing.price}</Text>
-                        <Text>Type: {listing.type}</Text>
-                        <Text>Guests: {listing.guests}</Text>
-                        <Text>Bedrooms: {listing.bedrooms}</Text>
-                        <Text>Bathrooms: {listing.bathrooms}</Text>
-                        <Text fontWeight="bold">
-                          Listed by: {listing.userName}
-                        </Text>
-                        <Text fontWeight="bold">
-                          User Email: {listing.userEmail}
-                        </Text>
-                        <Badge
-                          colorScheme={
-                            listing.status === "available" ? "green" : "red"
-                          }
-                        >
-                          {listing.status}
-                        </Badge>
-                        <Button
-                          colorScheme="red"
-                          onClick={() => handleDeleteListing(listing._id)}
-                        >
-                          Delete
-                        </Button>
-                      </Stack>
-                    </CardBody>
-                  </Card>
-                ))}
-              </SimpleGrid>
-            )}
+            <SimpleGrid columns={{ base: 1, md: 2 }} spacing={5}>
+              {listings.map((listing) => (
+                <Card
+                  key={listing._id}
+                  borderWidth="1px"
+                  borderRadius="lg"
+                  overflow="hidden"
+                  boxShadow="md"
+                >
+                  <CardBody>
+                    <Stack spacing={3}>
+                      <Heading size="md">{listing.title}</Heading>
+                      <Text>{listing.description}</Text>
+                      <Text fontWeight="bold">Price: ${listing.price}</Text>
+                      <Text>Type: {listing.type}</Text>
+                      <Text>Guests: {listing.guests}</Text>
+                      <Text>Bedrooms: {listing.bedrooms}</Text>
+                      <Text>Bathrooms: {listing.bathrooms}</Text>
+                      <Text fontWeight="bold">
+                        Listed by: {listing.userName}
+                      </Text>
+                      <Button
+                        colorScheme="red"
+                        onClick={() => handleDeleteListing(listing._id)}
+                      >
+                        Delete
+                      </Button>
+                    </Stack>
+                  </CardBody>
+                </Card>
+              ))}
+            </SimpleGrid>
           </TabPanel>
         </TabPanels>
       </Tabs>

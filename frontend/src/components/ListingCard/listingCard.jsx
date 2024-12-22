@@ -14,8 +14,11 @@ const ListingCard = ({
   bedrooms,
   bathrooms,
   price,
-  rating,
 }) => {
+  const imageUrl = imagePath
+    ? `http://localhost:5000${imagePath}`
+    : "https://via.placeholder.com/300x200?text=No+Image";
+
   return (
     <MotionBox
       as={Link}
@@ -25,32 +28,29 @@ const ListingCard = ({
       overflow="hidden"
       bg="white"
       boxShadow="md"
-      p={4}
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
+      whileHover={{ scale: 1.02 }}
+      transition={{ duration: 0.2 }}
     >
       <Image
-        src={`http://localhost:5000${imagePath}`}
+        src={imageUrl}
         alt={title}
-        borderRadius="md"
-        mb={4}
+        height="200px"
+        width="100%"
         objectFit="cover"
-        h="200px"
-        w="100%"
+        fallback={<Box height="200px" bg="gray.100" />}
       />
-      <Heading size="md" mb={2}>
-        {title}
-      </Heading>
-      <Text fontSize="sm" color="gray.500" mb={2}>
-        {type} • Guests: {guests} • Bedrooms: {bedrooms} • Bathrooms:{" "}
-        {bathrooms}
-      </Text>
-      <Text fontWeight="bold" color="teal.500" mb={2}>
-        ${price} / night
-      </Text>
+      <Box p={4}>
+        <Heading size="md" mb={2}>
+          {title}
+        </Heading>
+        <Text fontSize="sm" color="gray.500" mb={2}>
+          {type} • {guests} guests • {bedrooms} bed{bedrooms !== 1 ? "s" : ""} •{" "}
+          {bathrooms} bath{bathrooms !== 1 ? "s" : ""}
+        </Text>
+        <Text fontWeight="bold" color="teal.500">
+          ${price} / night
+        </Text>
+      </Box>
     </MotionBox>
   );
 };
@@ -64,7 +64,6 @@ ListingCard.propTypes = {
   bedrooms: PropTypes.number.isRequired,
   bathrooms: PropTypes.number.isRequired,
   price: PropTypes.number.isRequired,
-  rating: PropTypes.number,
 };
 
 export default ListingCard;

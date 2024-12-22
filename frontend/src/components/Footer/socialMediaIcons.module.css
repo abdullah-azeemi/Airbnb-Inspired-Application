@@ -1,5 +1,11 @@
+.socialIcons{
+  display: flex;
+  justify-content: center;
+  gap:15px;
+}
 .socialIcons a{
   color: #333;
+  text-decoration: none;
   margin-right: 20px;
   transition: color 0.3s ease;
 }

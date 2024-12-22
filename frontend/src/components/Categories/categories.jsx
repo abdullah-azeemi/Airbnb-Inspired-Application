@@ -3,10 +3,12 @@ import styles from "./categories.module.css";
 
 const categories = [
   { name: "All" },
+  { name: "House" },
   { name: "Beachfront" },
   { name: "Cabin" },
   { name: "Apartment" },
   { name: "Villa" },
+  { name: "Lakefront" },
 ];
 
 const Categories = ({ onCategorySelect }) => {

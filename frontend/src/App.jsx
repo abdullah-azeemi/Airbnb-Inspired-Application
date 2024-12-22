@@ -33,8 +33,22 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
-          <Route path="/properties/:id" element={<PropertyDetailsPage />} />
-          <Route path="/book/:id" element={<BookingPage />} />
+          <Route
+            path="/properties/:id"
+            element={
+              <PrivateRoute>
+                <PropertyDetailsPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/book/:id"
+            element={
+              <PrivateRoute>
+                <BookingPage />
+              </PrivateRoute>
+            }
+          />
           <Route path="/bookings" element={<UserBookingsPage />} />
           <Route path="/listings" element={<HomePage />} />
           <Route
