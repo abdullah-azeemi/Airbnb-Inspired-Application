@@ -104,19 +104,6 @@ src/
 - **React Icons**: For including social media icons in the footer.
 - **CSS Modules**: For scoped and modular styling.
 
-## Assumptions and Design Decisions
-
-- **Responsive Design**: The project assumes the design will be used on multiple screen sizes. Therefore, Flexbox and CSS media queries are used to ensure responsiveness.
-- **React Hooks**: The project uses functional components with React Hooks (`useState`, `useEffect`) for state and side-effect management. Class components were intentionally avoided for simplicity and modern React practices.
-- **CSS Modules**: Modular CSS was chosen to avoid global CSS conflicts. Each component has its own `.module.css` file to scope styles locally and improve maintainability.
-- **No Backend**: The project assumes no real backend is available. Mock data is used in the `ListingCard` components. In a real-world scenario, data fetching from an API would be implemented using `useEffect`.
-
-## Future Enhancements
-
-- **Add Real API**: In the future, we could implement real API integration to fetch listing data dynamically.
-- **Pagination**: Add pagination or infinite scrolling for the listing cards to simulate a more realistic experience.
-- **Search Functionality**: Enhance the search bar to filter listings based on location input and categories.
-
 ## License
 
 This project is open-source under the **MIT License**. You are free to use, modify, and distribute the code.
